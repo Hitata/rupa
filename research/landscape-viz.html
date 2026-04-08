@@ -1,0 +1,2126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rupa Research — AI Generation Landscape 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #12121a;
+  --bg-card-hover: #1a1a28;
+  --text: #e8e6e3;
+  --text-dim: #8a8a9a;
+  --text-muted: #55556a;
+  --accent-flame: #ff6b35;
+  --accent-cyan: #00e5ff;
+  --accent-violet: #b388ff;
+  --accent-emerald: #00e676;
+  --accent-gold: #ffd740;
+  --accent-rose: #ff5c8a;
+  --border: #2a2a3a;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-flame) var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-flame), var(--accent-cyan), var(--accent-violet));
+  z-index: 1000;
+  transition: width 0.1s linear;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+nav a {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  display: block;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+nav a.active {
+  background: var(--accent-flame);
+  box-shadow: 0 0 12px var(--accent-flame);
+  transform: scale(1.3);
+}
+
+nav a .tooltip {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+nav a:hover .tooltip { opacity: 1; }
+
+/* Sections */
+section {
+  min-height: 100vh;
+  padding: 120px 80px;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  section { padding: 80px 24px; }
+  nav { display: none; }
+}
+
+/* Fade-in on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* ===== HERO ===== */
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 0;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(255,107,53,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent-flame);
+  margin-bottom: 24px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 32px;
+  max-width: 900px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent-cyan);
+}
+
+.hero-sub {
+  font-size: 1.2rem;
+  color: var(--text-dim);
+  max-width: 600px;
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stat .number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent-flame);
+}
+
+.hero-stat .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-flame);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-label::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--accent-flame);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  margin-bottom: 16px;
+  max-width: 700px;
+}
+
+.section-desc {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin-bottom: 56px;
+  line-height: 1.7;
+}
+
+/* ===== KEY SHIFTS (2025 vs 2026) ===== */
+.shifts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.shift-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.shift-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-flame);
+  transform: translateY(-4px);
+}
+
+.shift-card .dim-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 16px;
+}
+
+.shift-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.shift-year {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  min-width: 44px;
+}
+
+.shift-val {
+  font-size: 0.95rem;
+  color: var(--text-dim);
+}
+
+.shift-val.now {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.shift-arrow {
+  color: var(--accent-flame);
+  font-size: 18px;
+  margin: 8px 0 8px 20px;
+}
+
+/* ===== MODEL LANDSCAPE ===== */
+.model-category {
+  margin-bottom: 64px;
+}
+
+.model-category-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.model-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.model-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.model-card:hover {
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+
+.model-card .name {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--accent-cyan);
+}
+
+.model-card .params {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.model-card .desc {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* VRAM bar */
+.vram-bar-container {
+  margin-top: auto;
+}
+
+.vram-label {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.vram-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vram-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+.vram-green { background: var(--accent-emerald); }
+.vram-yellow { background: var(--accent-gold); }
+.vram-orange { background: var(--accent-flame); }
+.vram-red { background: var(--accent-rose); }
+
+/* Quality badge */
+.quality-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.quality-excellent { background: rgba(0,230,118,0.15); color: var(--accent-emerald); }
+.quality-very-good { background: rgba(0,229,255,0.15); color: var(--accent-cyan); }
+.quality-good { background: rgba(255,215,64,0.15); color: var(--accent-gold); }
+.quality-moderate { background: rgba(255,92,138,0.15); color: var(--accent-rose); }
+
+/* License tag */
+.license-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  background: rgba(179,136,255,0.12);
+  color: var(--accent-violet);
+  margin-left: 8px;
+}
+
+/* ===== STYLE TRENDS ===== */
+.style-dominance {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin-top: 40px;
+}
+
+.style-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.style-bar-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  min-width: 200px;
+  text-align: right;
+  color: var(--text-dim);
+}
+
+.style-bar-track {
+  flex: 1;
+  height: 32px;
+  background: var(--bg-card);
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border);
+}
+
+.style-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--bg);
+  transition: width 1.5s ease;
+  width: 0;
+}
+
+.style-bar-fill.animated { /* set by JS */ }
+
+.style-trajectory {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  min-width: 100px;
+  color: var(--text-muted);
+}
+
+.trajectory-up { color: var(--accent-emerald); }
+.trajectory-stable { color: var(--accent-cyan); }
+.trajectory-spiky { color: var(--accent-gold); }
+
+/* ===== AESTHETIC MOVEMENTS ===== */
+.movement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.movement-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.movement-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.movement-card:nth-child(1)::before { background: var(--accent-flame); }
+.movement-card:nth-child(2)::before { background: var(--accent-cyan); }
+.movement-card:nth-child(3)::before { background: var(--accent-violet); }
+.movement-card:nth-child(4)::before { background: var(--accent-emerald); }
+.movement-card:nth-child(5)::before { background: var(--accent-gold); }
+
+.movement-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-muted);
+}
+
+.movement-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.movement-card p {
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.movement-card .tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--accent-gold);
+  margin-top: 12px;
+  font-size: 0.95rem;
+}
+
+/* ===== NAMED AESTHETICS ===== */
+.aesthetics-scroll {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 20px 0 20px 0;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.aesthetics-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.aesthetics-scroll::-webkit-scrollbar-thumb {
+  background: var(--accent-flame);
+  border-radius: 3px;
+}
+
+.aesthetic-chip {
+  flex-shrink: 0;
+  width: 260px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  scroll-snap-align: start;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.aesthetic-chip:hover {
+  border-color: var(--accent-violet);
+  background: var(--bg-card-hover);
+}
+
+.aesthetic-chip .name {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--accent-violet);
+  margin-bottom: 8px;
+}
+
+.aesthetic-chip .desc {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.aesthetic-chip .signal {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-emerald);
+  margin-top: 10px;
+}
+
+/* ===== API PRICING ===== */
+.pricing-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.pricing-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateY(-3px);
+}
+
+.pricing-card .service {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.pricing-card .price-main {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 4px;
+}
+
+.pricing-card .price-unit {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.pricing-card .features {
+  list-style: none;
+  padding: 0;
+}
+
+.pricing-card .features li {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.pricing-card .features li:last-child { border-bottom: none; }
+
+.pricing-card.recommended {
+  border-color: var(--accent-flame);
+  background: linear-gradient(135deg, var(--bg-card), rgba(255,107,53,0.06));
+}
+
+.pricing-card.recommended::after {
+  content: 'Best for Rupa';
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent-flame);
+  background: rgba(255,107,53,0.12);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ===== RUPA RECOMMENDATIONS ===== */
+.reco-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.reco-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.reco-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+}
+
+.reco-card .goal-number {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 900;
+  position: absolute;
+  top: -8px;
+  right: 16px;
+  opacity: 0.06;
+}
+
+.reco-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+.reco-item {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.reco-item:last-child { border-bottom: none; }
+
+.reco-approach {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  color: var(--accent-emerald);
+  min-width: 80px;
+  padding-top: 2px;
+}
+
+.reco-detail {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.reco-detail strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ===== PIPELINE DIAGRAM ===== */
+.pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.pipeline-step {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  position: relative;
+}
+
+.pipeline-step::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.pipeline-step:first-child::before { top: 50%; }
+.pipeline-step:last-child::before { bottom: 50%; }
+
+.pipeline-dot {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.pipeline-dot.flame { background: rgba(255,107,53,0.2); color: var(--accent-flame); border: 2px solid var(--accent-flame); }
+.pipeline-dot.cyan { background: rgba(0,229,255,0.2); color: var(--accent-cyan); border: 2px solid var(--accent-cyan); }
+.pipeline-dot.violet { background: rgba(179,136,255,0.2); color: var(--accent-violet); border: 2px solid var(--accent-violet); }
+.pipeline-dot.emerald { background: rgba(0,230,118,0.2); color: var(--accent-emerald); border: 2px solid var(--accent-emerald); }
+.pipeline-dot.gold { background: rgba(255,215,64,0.2); color: var(--accent-gold); border: 2px solid var(--accent-gold); }
+
+.pipeline-content h4 {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.pipeline-content p {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+/* ===== HARDWARE TIERS ===== */
+.hw-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.hw-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.hw-card:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-3px);
+}
+
+.hw-card .tier-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.hw-card .gpu-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.hw-card .vram-amount {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  margin-bottom: 16px;
+}
+
+.hw-card .vram-amount span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.hw-card .capabilities {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+}
+
+.hw-card .capabilities li {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  padding: 3px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.hw-card .capabilities li::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--accent-emerald);
+  font-family: var(--font-mono);
+}
+
+/* ===== BUDGET SCENARIOS ===== */
+.budget-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.budget-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.budget-card:hover { border-color: var(--accent-gold); }
+
+.budget-card .price-tag {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--accent-gold);
+}
+
+.budget-card .price-period {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.budget-card .budget-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--accent-flame);
+  margin-bottom: 12px;
+}
+
+.budget-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.budget-card ul li {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  padding: 4px 0;
+}
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 60px 80px;
+  text-align: center;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* ===== VIDEO MODELS ===== */
+.video-tier {
+  margin-bottom: 40px;
+}
+
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tier-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.tier-badge.high { background: rgba(255,92,138,0.15); color: var(--accent-rose); }
+.tier-badge.consumer { background: rgba(0,230,118,0.15); color: var(--accent-emerald); }
+.tier-badge.experimental { background: rgba(179,136,255,0.15); color: var(--accent-violet); }
+
+.tier-header h4 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+/* ===== POSE ESTIMATION ===== */
+.pose-comparison {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.pose-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  transition: all 0.3s ease;
+}
+
+.pose-card:hover {
+  border-color: var(--accent-emerald);
+  transform: translateY(-2px);
+}
+
+.pose-card h4 {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--accent-emerald);
+  margin-bottom: 12px;
+}
+
+.pose-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.85rem;
+}
+
+.pose-stat:last-child { border-bottom: none; }
+
+.pose-stat .key { color: var(--text-muted); }
+.pose-stat .val { color: var(--text); font-family: var(--font-mono); font-size: 0.82rem; }
+
+/* ===== SURPRISING TRENDS ===== */
+.surprise-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 40px;
+  max-width: 700px;
+}
+
+.surprise-item {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.surprise-item:hover {
+  border-color: var(--accent-gold);
+  background: var(--bg-card-hover);
+}
+
+.surprise-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-gold);
+  opacity: 0.4;
+  min-width: 40px;
+}
+
+.surprise-content h4 {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.surprise-content p {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+/* ===== FILTER TABS ===== */
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.filter-tab {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}
+
+.filter-tab.active {
+  background: var(--accent-flame);
+  border-color: var(--accent-flame);
+  color: var(--bg);
+}
+
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<nav id="sideNav">
+  <a href="#hero" class="active"><span class="tooltip">Overview</span></a>
+  <a href="#shifts"><span class="tooltip">2025 vs 2026</span></a>
+  <a href="#image-models"><span class="tooltip">Image Models</span></a>
+  <a href="#video-models"><span class="tooltip">Video Models</span></a>
+  <a href="#pose"><span class="tooltip">Pose & Pipeline</span></a>
+  <a href="#style-trends"><span class="tooltip">Style Trends</span></a>
+  <a href="#movements"><span class="tooltip">Aesthetic Movements</span></a>
+  <a href="#named-aesthetics"><span class="tooltip">Named Aesthetics</span></a>
+  <a href="#surprises"><span class="tooltip">Surprising Trends</span></a>
+  <a href="#pricing"><span class="tooltip">Pricing</span></a>
+  <a href="#hardware"><span class="tooltip">Hardware</span></a>
+  <a href="#rupa-recs"><span class="tooltip">Rupa Picks</span></a>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-label reveal">Rupa Research Lab</div>
+  <h1 class="reveal reveal-delay-1">AI Generation<br>Landscape <em>2026</em></h1>
+  <p class="hero-sub reveal reveal-delay-2">
+    Models, services, styles, and trends for image & video generation.
+    Everything you need to pick the right tools and find your visual voice.
+  </p>
+  <div class="hero-stats reveal reveal-delay-3">
+    <div class="hero-stat">
+      <span class="number">20+</span>
+      <span class="label">Models Compared</span>
+    </div>
+    <div class="hero-stat">
+      <span class="number">12</span>
+      <span class="label">API Services</span>
+    </div>
+    <div class="hero-stat">
+      <span class="number">13</span>
+      <span class="label">Named Aesthetics</span>
+    </div>
+    <div class="hero-stat">
+      <span class="number">5</span>
+      <span class="label">Rupa Goals</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== KEY SHIFTS ===== -->
+<section id="shifts">
+  <div class="section-label reveal">The Big Picture</div>
+  <h2 class="section-title reveal reveal-delay-1">What Changed in One Year</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    The field moved from "wow AI can do this" to "how do I make it <strong>mine</strong>."
+    Imperfection won. Authenticity over polish.
+  </p>
+
+  <div class="shifts-grid">
+    <div class="shift-card reveal">
+      <div class="dim-label">Overall Aesthetic</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">Hyper-polished perfection</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">Intentional imperfection, analog warmth</span></div>
+    </div>
+    <div class="shift-card reveal reveal-delay-1">
+      <div class="dim-label">Dominant Movement</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">"AI Realism" -- proving AI looks real</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">"AI Expressionism" -- proving AI feels real</span></div>
+    </div>
+    <div class="shift-card reveal reveal-delay-2">
+      <div class="dim-label">Style Philosophy</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">Minimalist, clean, sterile</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">Maximalist, layered, textured, personal</span></div>
+    </div>
+    <div class="shift-card reveal reveal-delay-3">
+      <div class="dim-label">Creative Approach</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">AI as magic button</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">AI as collaborative tool, human-directed</span></div>
+    </div>
+    <div class="shift-card reveal reveal-delay-4">
+      <div class="dim-label">Texture</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">Smooth, plastic, perfect</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">Film grain, brush strokes, analog warmth</span></div>
+    </div>
+    <div class="shift-card reveal reveal-delay-5">
+      <div class="dim-label">Local Models</div>
+      <div class="shift-row"><span class="shift-year">2025</span> <span class="shift-val">Stable Diffusion dominance</span></div>
+      <div class="shift-arrow">&#8595;</div>
+      <div class="shift-row"><span class="shift-year">2026</span> <span class="shift-val now">Flux overtakes SD; open video models close gap</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== IMAGE MODELS ===== -->
+<section id="image-models">
+  <div class="section-label reveal">Local + Cloud</div>
+  <h2 class="section-title reveal reveal-delay-1">Image Generation Models</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    <strong>Flux has overtaken Stable Diffusion</strong> as the go-to local model. SD3.5 retains strengths in portraits and typography. SDXL still has the largest LoRA ecosystem.
+  </p>
+
+  <div class="filter-tabs reveal reveal-delay-3" id="imageFilter">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="sd">Stable Diffusion</button>
+    <button class="filter-tab" data-filter="flux">Flux</button>
+    <button class="filter-tab" data-filter="other">Other</button>
+  </div>
+
+  <div class="model-grid" id="imageModelGrid">
+    <!-- SD Family -->
+    <div class="model-card reveal" data-category="sd">
+      <div class="name">SD 1.5</div>
+      <div class="params">860M params <span class="license-tag">CreativeML</span></div>
+      <div class="desc">Massive LoRA/checkpoint ecosystem. Dated quality but still useful for experimentation and ControlNet.</div>
+      <span class="quality-badge quality-good">Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>4-6 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-green" style="width:12%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-1" data-category="sd">
+      <div class="name">SDXL</div>
+      <div class="params">3.5B params <span class="license-tag">Open RAIL++</span></div>
+      <div class="desc">Best ecosystem of fine-tunes and LoRAs. Solid for faces and figures. Most community derivatives.</div>
+      <span class="quality-badge quality-very-good">Very Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>6-12 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-green" style="width:25%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-2" data-category="sd">
+      <div class="name">SD 3.5 Medium</div>
+      <div class="params">2.5B params <span class="license-tag">Open</span></div>
+      <div class="desc">Best "daily driver" -- runs on consumer hardware with good prompt adherence.</div>
+      <span class="quality-badge quality-very-good">Very Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>8-12 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-yellow" style="width:25%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-3" data-category="sd">
+      <div class="name">SD 3.5 Large</div>
+      <div class="params">8B params <span class="license-tag">Open</span></div>
+      <div class="desc">Best for typography and multi-subject coherence. Superior portrait skin textures vs Flux.</div>
+      <span class="quality-badge quality-excellent">Excellent</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>10-16 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-orange" style="width:33%"></div></div>
+      </div>
+    </div>
+
+    <!-- Flux -->
+    <div class="model-card reveal" data-category="flux">
+      <div class="name">Flux.1 Schnell</div>
+      <div class="params">12B params <span class="license-tag">Apache 2.0</span></div>
+      <div class="desc">Fully open, commercial use. Best speed/quality ratio. 4-step generation for rapid iteration.</div>
+      <span class="quality-badge quality-very-good">Very Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>6-12 GB (quantized)</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-green" style="width:25%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-1" data-category="flux">
+      <div class="name">Flux.1 Dev</div>
+      <div class="params">12B params <span class="license-tag">Non-commercial</span></div>
+      <div class="desc">Near-Pro quality. Superior text rendering. Open weights. The quality benchmark for local.</div>
+      <span class="quality-badge quality-excellent">Excellent</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>12-24 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-orange" style="width:50%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-2" data-category="flux">
+      <div class="name">Flux.1 Pro</div>
+      <div class="params">12B+ params <span class="license-tag">API Only</span></div>
+      <div class="desc">Best prompt adherence and coherence. API-dependent. The ceiling of what Flux can do.</div>
+      <span class="quality-badge quality-excellent">Excellent</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>API only</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-yellow" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Other -->
+    <div class="model-card reveal" data-category="other">
+      <div class="name">Illustrious XL</div>
+      <div class="params">Anime/illustration <span class="license-tag">Open</span></div>
+      <div class="desc">Fork of SDXL tuned for anime. Strong community. Clean line work, color consistency.</div>
+      <span class="quality-badge quality-very-good">Very Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>8-12 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-yellow" style="width:25%"></div></div>
+      </div>
+    </div>
+
+    <div class="model-card reveal reveal-delay-1" data-category="other">
+      <div class="name">Pony Diffusion</div>
+      <div class="params">Stylized/character <span class="license-tag">Open</span></div>
+      <div class="desc">Popular for character consistency. Massive LoRA library on Civitai. Top base model for anime.</div>
+      <span class="quality-badge quality-very-good">Very Good</span>
+      <div class="vram-bar-container" style="margin-top:12px">
+        <div class="vram-label"><span>VRAM</span><span>8-12 GB</span></div>
+        <div class="vram-bar"><div class="vram-bar-fill vram-yellow" style="width:25%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== VIDEO MODELS ===== -->
+<section id="video-models">
+  <div class="section-label reveal">Moving Pictures</div>
+  <h2 class="section-title reveal reveal-delay-1">Video Generation Models</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Open-source video narrowed the gap with closed services dramatically.
+    <strong>AnimateDiff (8GB)</strong> is the most accessible entry point.
+  </p>
+
+  <div class="video-tier reveal">
+    <div class="tier-header">
+      <span class="tier-badge high">40GB+ VRAM</span>
+      <h4>High-End / Cloud</h4>
+    </div>
+    <div class="model-grid">
+      <div class="model-card">
+        <div class="name">HunyuanVideo 1.5</div>
+        <div class="params">8.3B params &middot; Tencent <span class="license-tag">Open</span></div>
+        <div class="desc">Best open-source for motion realism and instruction following. Runs with offloading at 14GB.</div>
+        <span class="quality-badge quality-excellent">Excellent</span>
+      </div>
+      <div class="model-card">
+        <div class="name">Wan 2.2</div>
+        <div class="params">MoE arch &middot; Alibaba <span class="license-tag">Open</span></div>
+        <div class="desc">Most cinematic open-source model. Mixture-of-Experts. 40GB+ full, 40GB FP8.</div>
+        <span class="quality-badge quality-excellent">Excellent</span>
+      </div>
+      <div class="model-card">
+        <div class="name">Mochi 1</div>
+        <div class="params">10B params &middot; Genmo AI <span class="license-tag">Apache 2.0</span></div>
+        <div class="desc">Best licensing clarity for commercial use. 40GB+ VRAM needed.</div>
+        <span class="quality-badge quality-very-good">Very Good</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-tier reveal">
+    <div class="tier-header">
+      <span class="tier-badge consumer">8-24 GB VRAM</span>
+      <h4>Consumer-Friendly</h4>
+    </div>
+    <div class="model-grid">
+      <div class="model-card">
+        <div class="name">AnimateDiff</div>
+        <div class="params">Extends SD &middot; Community <span class="license-tag">Apache 2.0</span></div>
+        <div class="desc">Most accessible entry. Works with existing SD LoRAs. 2-4 sec clips at 8GB.</div>
+        <span class="quality-badge quality-good">Good</span>
+        <div class="vram-bar-container" style="margin-top:12px">
+          <div class="vram-label"><span>VRAM</span><span>8 GB</span></div>
+          <div class="vram-bar"><div class="vram-bar-fill vram-green" style="width:17%"></div></div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div class="name">CogVideoX-5B</div>
+        <div class="params">5B params &middot; Tsinghua <span class="license-tag">Open</span></div>
+        <div class="desc">Good quality at 16-24GB. 6 sec clips at 720x480. Better than 2B variant.</div>
+        <span class="quality-badge quality-very-good">Very Good</span>
+        <div class="vram-bar-container" style="margin-top:12px">
+          <div class="vram-label"><span>VRAM</span><span>16-24 GB</span></div>
+          <div class="vram-bar"><div class="vram-bar-fill vram-orange" style="width:50%"></div></div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div class="name">LTX Video 2.3</div>
+        <div class="params">Lightricks <span class="license-tag">Open</span></div>
+        <div class="desc">Up to 4K@50fps. Audio-synced video. Native ComfyUI support.</div>
+        <span class="quality-badge quality-very-good">Very Good</span>
+        <div class="vram-bar-container" style="margin-top:12px">
+          <div class="vram-label"><span>VRAM</span><span>12-24 GB</span></div>
+          <div class="vram-bar"><div class="vram-bar-fill vram-yellow" style="width:50%"></div></div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div class="name">SVD XT</div>
+        <div class="params">Stability AI <span class="license-tag">Open</span></div>
+        <div class="desc">Image-to-video. 25 frames at 576x1024. Good starting point for i2v.</div>
+        <span class="quality-badge quality-good">Good</span>
+        <div class="vram-bar-container" style="margin-top:12px">
+          <div class="vram-label"><span>VRAM</span><span>16-24 GB</span></div>
+          <div class="vram-bar"><div class="vram-bar-fill vram-orange" style="width:50%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== POSE ESTIMATION ===== -->
+<section id="pose">
+  <div class="section-label reveal">Martial Arts Core</div>
+  <h2 class="section-title reveal reveal-delay-1">Pose Estimation & Pipeline</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Critical for decomposing martial arts video into learnable sequences.
+    <strong>MediaPipe</strong> is the recommended starting point -- 33 keypoints, 3D, runs on CPU.
+  </p>
+
+  <div class="pose-comparison reveal">
+    <div class="pose-card">
+      <h4>MediaPipe Pose</h4>
+      <div class="pose-stat"><span class="key">Keypoints</span><span class="val">33 body</span></div>
+      <div class="pose-stat"><span class="key">Approach</span><span class="val">Top-down</span></div>
+      <div class="pose-stat"><span class="key">Speed</span><span class="val">Real-time on CPU</span></div>
+      <div class="pose-stat"><span class="key">3D</span><span class="val">Yes</span></div>
+      <div class="pose-stat"><span class="key">VRAM</span><span class="val">None (CPU)</span></div>
+      <div class="pose-stat"><span class="key">License</span><span class="val">Apache 2.0</span></div>
+      <div class="pose-stat"><span class="key">Best for</span><span class="val">Single-person, real-time</span></div>
+    </div>
+    <div class="pose-card">
+      <h4>OpenPose</h4>
+      <div class="pose-stat"><span class="key">Keypoints</span><span class="val">135 total (body+hands+face)</span></div>
+      <div class="pose-stat"><span class="key">Approach</span><span class="val">Bottom-up</span></div>
+      <div class="pose-stat"><span class="key">Speed</span><span class="val">Slower, GPU helps</span></div>
+      <div class="pose-stat"><span class="key">3D</span><span class="val">Limited</span></div>
+      <div class="pose-stat"><span class="key">VRAM</span><span class="val">2-4 GB</span></div>
+      <div class="pose-stat"><span class="key">License</span><span class="val">AGPL (commercial)</span></div>
+      <div class="pose-stat"><span class="key">Best for</span><span class="val">Multi-person, ControlNet</span></div>
+    </div>
+    <div class="pose-card">
+      <h4>DWPose / RTMPose</h4>
+      <div class="pose-stat"><span class="key">Keypoints</span><span class="val">High accuracy</span></div>
+      <div class="pose-stat"><span class="key">Approach</span><span class="val">Modern</span></div>
+      <div class="pose-stat"><span class="key">Speed</span><span class="val">Fast</span></div>
+      <div class="pose-stat"><span class="key">3D</span><span class="val">Varies</span></div>
+      <div class="pose-stat"><span class="key">VRAM</span><span class="val">Moderate</span></div>
+      <div class="pose-stat"><span class="key">License</span><span class="val">Open</span></div>
+      <div class="pose-stat"><span class="key">Best for</span><span class="val">ControlNet conditioning</span></div>
+    </div>
+  </div>
+
+  <h3 class="section-title reveal" style="font-size:1.6rem; margin-top:64px;">Martial Arts Decomposition Pipeline</h3>
+
+  <div class="pipeline reveal">
+    <div class="pipeline-step">
+      <div class="pipeline-dot flame">1</div>
+      <div class="pipeline-content">
+        <h4>Source Video</h4>
+        <p>Tai Chi, Kung Fu, or other martial arts footage</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot cyan">2</div>
+      <div class="pipeline-content">
+        <h4>FFmpeg Frame Extraction</h4>
+        <p>Extract at 24-30fps or key frames only</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot violet">3</div>
+      <div class="pipeline-content">
+        <h4>Pose Estimation</h4>
+        <p>MediaPipe (single person) / OpenPose (multi) / DWPose (ControlNet)</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot emerald">4</div>
+      <div class="pipeline-content">
+        <h4>Skeleton Viz + Keypoint JSON</h4>
+        <p>OpenCV overlays + movement phase segmentation</p>
+      </div>
+    </div>
+    <div class="pipeline-step">
+      <div class="pipeline-dot gold">5</div>
+      <div class="pipeline-content">
+        <h4>ControlNet Style Transfer</h4>
+        <p>Regenerate movements in ink wash, anime, or other styles</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== STYLE TRENDS ===== -->
+<section id="style-trends">
+  <div class="section-label reveal">What People Are Making</div>
+  <h2 class="section-title reveal reveal-delay-1">Style Dominance in 2026</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    <strong>Anime leads at ~30-35%</strong> of all generation volume.
+    Nostalgia, surrealism, and dreamcore are the fastest growers.
+  </p>
+
+  <div class="style-dominance reveal reveal-delay-3" id="styleBars">
+    <div class="style-bar-row">
+      <div class="style-bar-label">Anime / Illustrated</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="85%" style="background: var(--accent-violet);">~30-35%</div></div>
+      <div class="style-trajectory trajectory-stable">Stable dominant</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Photorealistic / Fashion</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="65%" style="background: var(--accent-cyan);">~20-25%</div></div>
+      <div class="style-trajectory trajectory-stable">Shifting to "authentic"</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Cyberpunk / Neon / Sci-Fi</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="40%" style="background: var(--accent-rose);">~10-15%</div></div>
+      <div class="style-trajectory trajectory-stable">Steady</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Fantasy / Worldbuilding</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="28%" style="background: var(--accent-emerald);">~8-10%</div></div>
+      <div class="style-trajectory trajectory-up">Growing</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Nostalgic / Retro</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="28%" style="background: var(--accent-gold);">~8-10%</div></div>
+      <div class="style-trajectory trajectory-up">Growing fast</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Surreal / Dreamcore</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="20%" style="background: var(--accent-flame);">~5-8%</div></div>
+      <div class="style-trajectory trajectory-up">Growing fast</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Meme / Viral Formats</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="15%" style="background: #ff9800;">~5%</div></div>
+      <div class="style-trajectory trajectory-spiky">Spiky (trend-driven)</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Minimalist / Line Art</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="12%" style="background: #90a4ae;">~3-5%</div></div>
+      <div class="style-trajectory trajectory-stable">Stable</div>
+    </div>
+    <div class="style-bar-row">
+      <div class="style-bar-label">Mixed Media / Collage</div>
+      <div class="style-bar-track"><div class="style-bar-fill" data-width="8%" style="background: #ce93d8;">~2-3%</div></div>
+      <div class="style-trajectory trajectory-up">Emerging</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== AESTHETIC MOVEMENTS ===== -->
+<section id="movements">
+  <div class="section-label reveal">The Big Ideas</div>
+  <h2 class="section-title reveal reveal-delay-1">Overarching Aesthetic Movements</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Five macro shifts shaping everything people create right now.
+  </p>
+
+  <div class="movement-grid reveal reveal-delay-3">
+    <div class="movement-card">
+      <h3>The Imperfection Movement</h3>
+      <p>The biggest shift of 2026. Vintage camera artifacts, film grain, casual framing. Direct reaction to 2025's sterile hyper-realism.</p>
+      <div class="tagline">"Authenticity over perfection"</div>
+    </div>
+    <div class="movement-card">
+      <h3>Intentional Maximalism</h3>
+      <p>Not excess for its own sake -- deliberate layering. Strong contrasts, expressive scale, complex patterns, bold typography.</p>
+      <div class="tagline">"Considered, not chaotic"</div>
+    </div>
+    <div class="movement-card">
+      <h3>Warm Minimalism</h3>
+      <p>Counter-movement. Cold sterile minimalism is out. Warm tones, soft typography, balanced white space.</p>
+      <div class="tagline">"Clarity with presence"</div>
+    </div>
+    <div class="movement-card">
+      <h3>Analog-Digital Hybrid</h3>
+      <p>AI generation combined with handmade sensibility. Analog film grain, brush textures, watercolor-digital fusion, collage aesthetics.</p>
+      <div class="tagline">"Tactile, not algorithmically smooth"</div>
+    </div>
+    <div class="movement-card">
+      <h3>Personal Narrative AI</h3>
+      <p>The fastest-growing philosophical movement. Personal stories, cultural backgrounds, emotional experiences through AI as medium.</p>
+      <div class="tagline">"Identity-rich, emotionally weighted"</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== NAMED AESTHETICS ===== -->
+<section id="named-aesthetics">
+  <div class="section-label reveal">Community Cultures</div>
+  <h2 class="section-title reveal reveal-delay-1">13 Named Aesthetic Communities</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Each has active communities, hashtags, and dedicated LoRAs. Scroll sideways to explore.
+  </p>
+
+  <div class="aesthetics-scroll reveal reveal-delay-3">
+    <div class="aesthetic-chip">
+      <div class="name">Dreamcore</div>
+      <div class="desc">Nostalgic fever-dream imagery. Liminal spaces, distorted familiarity.</div>
+      <div class="signal">"liminal" searches +220% YoY</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Y2K Chrome</div>
+      <div class="desc">Early-2000s metallic textures, sparkles, plastic, retro-tech nostalgia.</div>
+      <div class="signal">Massive on TikTok, Gen Z driven</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Synthwave / Retrowave</div>
+      <div class="desc">1980s neon grids, sunset gradients, chrome cars.</div>
+      <div class="signal">Dedicated Civitai LoRAs</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Vaporwave</div>
+      <div class="desc">Pastel gradients, Roman statues, glitch art, consumer culture critique.</div>
+      <div class="signal">"Vaporwave 2026" Flux LoRA</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Cottagecore</div>
+      <div class="desc">Rustic simplicity, wildflowers, pastoral scenes, handmade warmth.</div>
+      <div class="signal">Mature community, AI-blended</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Dark Academia</div>
+      <div class="desc">Gothic libraries, candlelight, leather-bound books, scholarly aesthetic.</div>
+      <div class="signal">Steady community, mood boards</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Solarpunk</div>
+      <div class="desc">Bright, optimistic futures. Organic architecture, green tech.</div>
+      <div class="signal">Growing as cyberpunk counterpoint</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">GrannyWave</div>
+      <div class="desc">Heritage nostalgia from India. Handloom patterns, Bollywood glamour, festival colors.</div>
+      <div class="signal">"Desi" searches +26%</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Y3K Hyperfuturism</div>
+      <div class="desc">Ultra-futuristic Y2K on steroids. Fluid metallic forms, holographic gradients.</div>
+      <div class="signal">Emerging maximalist future</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Code Brutalism</div>
+      <div class="desc">Monospaced type, terminal aesthetics, ASCII art, utilitarian design.</div>
+      <div class="signal">Dev culture crossover</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Opt-Out Era</div>
+      <div class="desc">Quiet minimalism as rebellion. Serif fonts, clean hierarchy.</div>
+      <div class="signal">"clean layout" / "serif" +54%</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Italian Brainrot</div>
+      <div class="desc">Exaggerated Italian gestures, over-the-top meme expressions.</div>
+      <div class="signal">Viral meme format, TikTok</div>
+    </div>
+    <div class="aesthetic-chip">
+      <div class="name">Future Medieval</div>
+      <div class="desc">Gothic/baroque fused with futuristic digital effects.</div>
+      <div class="signal">Dominating graphic design circles</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== SURPRISING TRENDS ===== -->
+<section id="surprises">
+  <div class="section-label reveal">The Unexpected</div>
+  <h2 class="section-title reveal reveal-delay-1">7 Surprising Trends</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Things nobody predicted would blow up -- but did.
+  </p>
+
+  <div class="surprise-list">
+    <div class="surprise-item reveal">
+      <div class="surprise-num">1</div>
+      <div class="surprise-content">
+        <h4>AI Stained Glass Art</h4>
+        <p>Any subject rendered as luminous cathedral windows. Surprisingly emotional and shareable.</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal reveal-delay-1">
+      <div class="surprise-num">2</div>
+      <div class="surprise-content">
+        <h4>Fantasy Cartography</h4>
+        <p>Parchment-style AI maps flooding Reddit/Discord. Worldbuilders and tabletop RPG players are a massive underserved niche.</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal reveal-delay-2">
+      <div class="surprise-num">3</div>
+      <div class="surprise-content">
+        <h4>Italian Brainrot</h4>
+        <p>Absurdist meme aesthetic blending exaggerated Italian stereotypes with AI generation. Pure internet culture.</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal reveal-delay-3">
+      <div class="surprise-num">4</div>
+      <div class="surprise-content">
+        <h4>Code Brutalism</h4>
+        <p>Developer-culture aesthetic crossing into AI art. Signals "I'm technical, not just a prompt-typer."</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal reveal-delay-4">
+      <div class="surprise-num">5</div>
+      <div class="surprise-content">
+        <h4>Hyperrealistic Food Art</h4>
+        <p>AI food images so convincing they create "double-take moments." Growing fast on Instagram/Pinterest.</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal reveal-delay-5">
+      <div class="surprise-num">6</div>
+      <div class="surprise-content">
+        <h4>GrannyWave</h4>
+        <p>Heritage nostalgia from India gaining global traction. Handloom patterns, Bollywood glamour, festival colors.</p>
+      </div>
+    </div>
+    <div class="surprise-item reveal">
+      <div class="surprise-num">7</div>
+      <div class="surprise-content">
+        <h4>The "Imperfect Photo" Trend</h4>
+        <p>Deliberately generating images that look like casual phone snapshots or vintage camera shots. The anti-AI-aesthetic aesthetic.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="section-label reveal">Money Talk</div>
+  <h2 class="section-title reveal reveal-delay-1">API & Service Pricing</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    <strong>fal.ai is cheapest</strong> for open models. Midjourney leads aesthetics.
+    Leonardo has the best free tier with ControlNet.
+  </p>
+
+  <div class="pricing-comparison reveal reveal-delay-3">
+    <div class="pricing-card" style="position:relative">
+      <div class="service">Midjourney</div>
+      <div class="price-main">$30</div>
+      <div class="price-unit">/month (Standard)</div>
+      <ul class="features">
+        <li>Unlimited relax-mode images</li>
+        <li>Industry-leading aesthetic quality</li>
+        <li>No LoRA, no ControlNet</li>
+        <li>Discord/web only, no API</li>
+        <li>Public images unless Pro ($60)</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="service">OpenAI GPT Image</div>
+      <div class="price-main">$0.005</div>
+      <div class="price-unit">to $0.20 per image (API)</div>
+      <ul class="features">
+        <li>Included in ChatGPT Plus ($20/mo)</li>
+        <li>Good photorealism, strong text</li>
+        <li>No LoRA, no pose control</li>
+        <li>Great for quick prototyping</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="service">Leonardo.ai</div>
+      <div class="price-main">Free</div>
+      <div class="price-unit">150 tokens/day (~20-30 images)</div>
+      <ul class="features">
+        <li>ControlNet support</li>
+        <li>Custom model training (paid)</li>
+        <li>Paid from $10/mo</li>
+        <li>Good middle ground</li>
+      </ul>
+    </div>
+    <div class="pricing-card" style="position:relative">
+      <div class="service">fal.ai</div>
+      <div class="price-main">$0.025</div>
+      <div class="price-unit">/image (Flux Dev)</div>
+      <ul class="features">
+        <li>Cheapest API option</li>
+        <li>Supports LoRA, ControlNet, IP-Adapter</li>
+        <li>4x faster inference claims</li>
+        <li>30-50% cheaper than Replicate</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="service">Replicate</div>
+      <div class="price-main">$0.03</div>
+      <div class="price-unit">/image (pay-per-second GPU)</div>
+      <ul class="features">
+        <li>Run any open-source model</li>
+        <li>Custom LoRA inference</li>
+        <li>Full ControlNet support</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="service">Runway ML</div>
+      <div class="price-main">$28</div>
+      <div class="price-unit">/month (Pro, video)</div>
+      <ul class="features">
+        <li>Best video control (motion brush)</li>
+        <li>Gen-4/4.5 quality</li>
+        <li>Camera control, lip sync</li>
+        <li>5-15 sec clips</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="section-title reveal" style="font-size:1.6rem; margin-top:64px;">Monthly Budget Scenarios</h3>
+
+  <div class="budget-cards reveal">
+    <div class="budget-card">
+      <div class="price-tag">$0</div>
+      <div class="price-period">/month</div>
+      <div class="budget-label">Local Only</div>
+      <ul>
+        <li>All open-source models free</li>
+        <li>ComfyUI, MediaPipe, Kohya free</li>
+        <li>Only cost: electricity + GPU</li>
+      </ul>
+    </div>
+    <div class="budget-card">
+      <div class="price-tag">~$30</div>
+      <div class="price-period">/month</div>
+      <div class="budget-label">Hybrid</div>
+      <ul>
+        <li>Local for primary work</li>
+        <li>Midjourney Standard for exploration</li>
+        <li>OR Leonardo + fal.ai pay-as-you-go</li>
+      </ul>
+    </div>
+    <div class="budget-card">
+      <div class="price-tag">~$60</div>
+      <div class="price-period">/month</div>
+      <div class="budget-label">Full Stack</div>
+      <ul>
+        <li>Local for training + private work</li>
+        <li>Midjourney Pro (stealth mode)</li>
+        <li>OR Runway Pro + MJ Standard</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== HARDWARE ===== -->
+<section id="hardware">
+  <div class="section-label reveal">Your Machine</div>
+  <h2 class="section-title reveal reveal-delay-1">Hardware Tiers</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    What you can actually run at each VRAM level.
+  </p>
+
+  <div class="hw-tiers reveal reveal-delay-3">
+    <div class="hw-card">
+      <div class="tier-label">Entry</div>
+      <div class="gpu-name">RTX 3060 / 4060 Ti</div>
+      <div class="vram-amount">12 <span>GB</span></div>
+      <ul class="capabilities">
+        <li>SD 1.5, SDXL</li>
+        <li>SD3.5 Medium</li>
+        <li>Flux Schnell (quantized)</li>
+        <li>AnimateDiff</li>
+        <li>SDXL LoRA training</li>
+        <li>MediaPipe (CPU)</li>
+      </ul>
+    </div>
+    <div class="hw-card">
+      <div class="tier-label">Mid</div>
+      <div class="gpu-name">RTX 4070 Ti / 4080</div>
+      <div class="vram-amount">16 <span>GB</span></div>
+      <ul class="capabilities">
+        <li>Everything Entry +</li>
+        <li>SD3.5 Large</li>
+        <li>Flux Dev (quantized)</li>
+        <li>CogVideoX-2B</li>
+        <li>SVD</li>
+      </ul>
+    </div>
+    <div class="hw-card">
+      <div class="tier-label">High</div>
+      <div class="gpu-name">RTX 4090 / 5090</div>
+      <div class="vram-amount">24-32 <span>GB</span></div>
+      <ul class="capabilities">
+        <li>Everything Mid +</li>
+        <li>Flux Dev (full)</li>
+        <li>CogVideoX-5B</li>
+        <li>Flux LoRA training</li>
+        <li>Most video models</li>
+      </ul>
+    </div>
+    <div class="hw-card">
+      <div class="tier-label">Cloud</div>
+      <div class="gpu-name">A100 / H100 (rent)</div>
+      <div class="vram-amount">80 <span>GB</span></div>
+      <ul class="capabilities">
+        <li>Everything +</li>
+        <li>HunyuanVideo full</li>
+        <li>Wan 2.2 full</li>
+        <li>Mochi 1, Open-Sora 2.0</li>
+        <li>$1-3/hr rental</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===== RUPA RECOMMENDATIONS ===== -->
+<section id="rupa-recs">
+  <div class="section-label reveal">The Picks</div>
+  <h2 class="section-title reveal reveal-delay-1">Recommendations by Rupa Goal</h2>
+  <p class="section-desc reveal reveal-delay-2">
+    Best tool for each of the five focus areas. Local-first, API for exploration.
+  </p>
+
+  <div class="reco-grid">
+    <div class="reco-card reveal">
+      <div class="goal-number">1</div>
+      <h3>Face Generation</h3>
+      <div class="reco-item">
+        <span class="reco-approach">PRIMARY</span>
+        <div class="reco-detail"><strong>Flux.1 Dev + face LoRA</strong> (Kohya). Best quality + customization.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">FAST</span>
+        <div class="reco-detail"><strong>Flux.1 Schnell</strong>. Apache 2.0, 4-step rapid iteration.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">PORTRAITS</span>
+        <div class="reco-detail"><strong>SD 3.5 Large</strong>. Superior skin textures.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">EXPLORE</span>
+        <div class="reco-detail"><strong>Midjourney</strong>. Best aesthetics for references.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">CONSISTENCY</span>
+        <div class="reco-detail"><strong>IP-Adapter FaceID + LoRA</strong>. Combine both.</div>
+      </div>
+    </div>
+
+    <div class="reco-card reveal reveal-delay-1">
+      <div class="goal-number">2</div>
+      <h3>Body & Figure</h3>
+      <div class="reco-item">
+        <span class="reco-approach">LOCAL</span>
+        <div class="reco-detail"><strong>Flux.1 Dev or SDXL + ControlNet</strong> (pose).</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">POSE</span>
+        <div class="reco-detail"><strong>ControlNet OpenPose/DWPose</strong>. Feed skeleton data.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">API</span>
+        <div class="reco-detail"><strong>Leonardo.ai</strong>. ControlNet in a friendly UI.</div>
+      </div>
+    </div>
+
+    <div class="reco-card reveal reveal-delay-2">
+      <div class="goal-number">3</div>
+      <h3>Martial Arts Decomposition</h3>
+      <div class="reco-item">
+        <span class="reco-approach">EXTRACT</span>
+        <div class="reco-detail"><strong>FFmpeg</strong> at 24-30fps.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">POSE</span>
+        <div class="reco-detail"><strong>MediaPipe Pose</strong>. 33 keypoints, 3D, CPU, free.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">VIZ</span>
+        <div class="reco-detail"><strong>OpenCV + custom</strong> skeleton overlays.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">STYLE</span>
+        <div class="reco-detail"><strong>ControlNet DWPose + style LoRA</strong>. Ink wash, anime, etc.</div>
+      </div>
+    </div>
+
+    <div class="reco-card reveal reveal-delay-3">
+      <div class="goal-number">4</div>
+      <h3>Style Exploration</h3>
+      <div class="reco-item">
+        <span class="reco-approach">PHOTO</span>
+        <div class="reco-detail"><strong>Flux.1 Dev</strong> or Midjourney.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">ANIME</span>
+        <div class="reco-detail"><strong>Illustrious XL</strong> or SDXL anime LoRAs.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">INK WASH</span>
+        <div class="reco-detail"><strong>SD 3.5 or Flux + custom ink wash LoRA</strong> (train it).</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">MIX</span>
+        <div class="reco-detail"><strong>ComfyUI</strong> blending multiple LoRAs + IP-Adapter.</div>
+      </div>
+    </div>
+
+    <div class="reco-card reveal reveal-delay-4">
+      <div class="goal-number">5</div>
+      <h3>Image-to-Video</h3>
+      <div class="reco-item">
+        <span class="reco-approach">8 GB</span>
+        <div class="reco-detail"><strong>AnimateDiff</strong>. Most accessible, works with SD LoRAs.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">12-16 GB</span>
+        <div class="reco-detail"><strong>CogVideoX-2B / LTX Video</strong>.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">CLOUD</span>
+        <div class="reco-detail"><strong>HunyuanVideo 1.5 / Wan 2.2</strong>. Best quality.</div>
+      </div>
+      <div class="reco-item">
+        <span class="reco-approach">API EASY</span>
+        <div class="reco-detail"><strong>Luma Dream Machine</strong>. From $8/mo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<div class="footer">
+  <p>Rupa Research Lab &middot; April 2026 &middot; Revisit quarterly</p>
+  <p style="margin-top:8px; color: var(--text-muted);">Local models recommended for privacy. API for exploration.</p>
+</div>
+
+<script>
+// Progress bar
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  progressBar.style.width = progress + '%';
+});
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Style bars animation
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.style-bar-fill').forEach(bar => {
+        bar.style.width = bar.dataset.width;
+      });
+    }
+  });
+}, { threshold: 0.3 });
+
+const styleBars = document.getElementById('styleBars');
+if (styleBars) barObserver.observe(styleBars);
+
+// Nav active state
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('nav a');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => link.classList.remove('active'));
+      const activeLink = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-20% 0px -60% 0px' });
+
+sections.forEach(section => navObserver.observe(section));
+
+// Filter tabs
+const filterTabs = document.querySelectorAll('.filter-tab');
+const modelCards = document.querySelectorAll('#imageModelGrid .model-card');
+
+filterTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    filterTabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const filter = tab.dataset.filter;
+    modelCards.forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.style.display = '';
+        card.style.opacity = '0';
+        requestAnimationFrame(() => { card.style.opacity = '1'; });
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

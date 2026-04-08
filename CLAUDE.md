@@ -61,6 +61,12 @@ Use the `python-standards` skill when writing or reviewing Python code.
 
 ---
 
+## Default behavior
+
+When 黄忠 brings up a topic, research question, or idea — **create a GitHub issue** by default. His conversation inputs are raw signal that should be captured as issues with full context, not just discussed and forgotten.
+
+---
+
 ## Dispute resolution
 
 When new information conflicts with a prior decision:
